@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+
+<div th:replace="~{layout :: body(content = ~{::content})}">
+
+    <div th:fragment="content">
+
+        <h1>Профиль пользователя</h1>
+
+        <p><b>ID:</b> <span th:text="${user.id}"></span></p>
+        <p><b>Имя:</b> <span th:text="${user.username}"></span></p>
+        <p><b>Email:</b> <span th:text="${user.email}"></span></p>
+
+        <p><b>Роли:</b>
+            <span th:each="role : ${user.roles}"
+                  th:text="${role.name + ' '}"></span>
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

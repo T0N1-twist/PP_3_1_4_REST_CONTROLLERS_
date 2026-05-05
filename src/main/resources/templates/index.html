@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="pageTitle='Главная'">
+
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+<div th:replace="~{layout :: body(content = ~{::content})}">
+
+    <div th:fragment="content">
+
+        <h1>Добро пожаловать</h1>
+
+    </div>
+
+</div>
+</body>
+</html>

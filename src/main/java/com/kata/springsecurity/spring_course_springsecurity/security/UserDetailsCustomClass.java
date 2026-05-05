@@ -1,0 +1,57 @@
+package com.kata.springsecurity.spring_course_springsecurity.security;
+
+import org.springframework.security.core.GrantedAuthority;
+import com.kata.springsecurity.spring_course_springsecurity.model.User;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+
+public class UserDetailsCustomClass implements UserDetails {
+
+    private final User user;
+
+    public UserDetailsCustomClass(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return user.getRoles();
+    }
+
+    @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return user.getEmail();
+    }
+
+    @Override
+public boolean isAccountNonExpired(){
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked(){
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+
+    }
+
+}

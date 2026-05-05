@@ -1,0 +1,9 @@
+# Основное правило — все текстовые файлы хранятся с LF
+* text=auto eol=lf
+
+# Windows-скрипты должны быть с CRLF
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Maven Wrapper
+/mvnw text eol=lf
