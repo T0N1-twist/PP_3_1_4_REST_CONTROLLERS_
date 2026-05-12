@@ -6,6 +6,7 @@ import com.kata.springsecurity.spring_course_springsecurity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.kata.springsecurity.spring_course_springsecurity.model.User;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,12 @@ public class AdminController {
         this.roleService = roleService;
     }
 
+    @GetMapping("/generate-hash")
+    @ResponseBody
+    public String generateHash() {
+        return new BCryptPasswordEncoder().encode("admin");
+    }
+
     @GetMapping
     public String showAdminPage(Model model, Authentication authentication) {
         model.addAttribute("users", userService.getAllUsers());
@@ -37,11 +44,15 @@ public class AdminController {
 
     @PostMapping("/new")
     public String createUser(@RequestParam String username,
+                             @RequestParam String lastName,
+                             @RequestParam Integer age,
                              @RequestParam String email,
                              @RequestParam String password,
                              @RequestParam(required = false) List<Integer> roleIds) {
         User user = new User();
         user.setUsername(username);
+        user.setLastName(lastName);
+        user.setAge(age);
         user.setEmail(email);
         user.setPassword(password);
         if (roleIds != null) {
@@ -55,15 +66,21 @@ public class AdminController {
     @PostMapping("/update")
     public String updateUser(@RequestParam Long id,
                              @RequestParam String username,
+                             @RequestParam String lastName,
+                             @RequestParam Integer age,
                              @RequestParam String email,
-                             @RequestParam String password,
+                             @RequestParam(required = false) String password,  // ← required = false
                              @RequestParam(required = false) List<Integer> roleIds) {
         User user = userService.getUserById(id);
         user.setUsername(username);
+        user.setLastName(lastName);
+        user.setAge(age);
         user.setEmail(email);
-        if (password != null && !password.isBlank()) {
-            user.setPassword(password);
-        }
+
+        // просто передаём пароль как есть (null или plain text)
+        // сервис сам проверит isBlank и зашифрует
+        user.setPassword(password);
+
         if (roleIds != null) {
             Set<Role> roles = new HashSet<>(roleService.getRolesByIds(roleIds));
             user.setRoles(roles);
@@ -71,6 +88,7 @@ public class AdminController {
         userService.updateUser(user);
         return "redirect:/admin";
     }
+
 
     @PostMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id) {

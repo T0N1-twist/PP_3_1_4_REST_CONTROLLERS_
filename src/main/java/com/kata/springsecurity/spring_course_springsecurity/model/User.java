@@ -15,10 +15,16 @@ public class User {
     @Column (name = "name")
     private String username;
 
+    @Column (name = "lastName")
+    private String lastName;
+
+    @Column (name = "age")
+    private int age;
+
     @Column (name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column (name = "password", unique = true)
+    @Column (name = "password")
     private String password;
 
 
@@ -55,6 +61,21 @@ public class User {
         this.username = username;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 
     public String getEmail() {
         return email;

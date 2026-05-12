@@ -2,7 +2,9 @@ package com.kata.springsecurity.spring_course_springsecurity.service;
 
 import com.kata.springsecurity.spring_course_springsecurity.repository.UserRepository;
 import com.kata.springsecurity.spring_course_springsecurity.model.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -10,9 +12,13 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-   public  UserServiceImpl(UserRepository userRepository) {
+
+
+    public  UserServiceImpl(UserRepository userRepository,PasswordEncoder passwordEncoder) {
        this.userRepository = userRepository;
+       this.passwordEncoder = passwordEncoder;
    }
 
   @Override
@@ -27,15 +33,26 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional
     public void saveUser(User user) {
-       userRepository.save(user);
-
+      user.setPassword(passwordEncoder.encode(user.getPassword()));
+      userRepository.save(user);
   }
 
-  @Override
+    @Override
+    @Transactional
     public void updateUser(User user) {
-userRepository.save(user);
-  }
+        User existing = userRepository.findById(user.getId()).orElseThrow();
+        existing.setUsername(user.getUsername());
+        existing.setLastName(user.getLastName());
+        existing.setAge(user.getAge());
+        existing.setEmail(user.getEmail());
+        existing.setRoles(user.getRoles());
+        if (user.getPassword() != null && !user.getPassword().isBlank()) {
+            existing.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        userRepository.save(existing);
+    }
 
     @Override
     public void deleteUser(Long id) {

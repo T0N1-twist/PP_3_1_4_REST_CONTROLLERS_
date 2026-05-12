@@ -41,7 +41,9 @@ public class Role implements  GrantedAuthority {
     }
 
     @Override
-    public String getAuthority() { return name;    }
+    public String getAuthority() { if (name != null && name.startsWith("ROLE_")) {
+        return name;
+    }return "ROLE_"+name;    }
 
 
 }
