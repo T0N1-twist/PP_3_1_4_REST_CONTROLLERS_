@@ -1,16 +1,14 @@
 package com.kata.springsecurity.spring_course_springsecurity.controller;
 
-
+import com.kata.springsecurity.spring_course_springsecurity.model.Role;
+import com.kata.springsecurity.spring_course_springsecurity.model.User;
 import com.kata.springsecurity.spring_course_springsecurity.service.RoleService;
 import com.kata.springsecurity.spring_course_springsecurity.service.UserService;
-
-import org.springframework.security.core.Authentication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 
 @Controller
 @RequestMapping("/admin")
@@ -19,47 +17,54 @@ public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
 
-
     public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
 
     @GetMapping
-    public String showAdminPage(Model model, Authentication authentication) {
-        model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("roles", roleService.getAllRoles());
-        model.addAttribute("currentUser", authentication.getName());
-        model.addAttribute("currentUserRoles", authentication.getAuthorities());
+    public String showAdminPage() {
         return "admin";
     }
 
-    @PostMapping("/new")
-    public String createUser(@RequestParam String username,
-                             @RequestParam String lastName,
-                             @RequestParam Integer age,
-                             @RequestParam String email,
-                             @RequestParam String password,
-                             @RequestParam(required = false) List<Integer> roleIds) {
-        userService.saveUser(username, lastName, age, email, password, roleIds);
-        return "redirect:/admin";
+    @GetMapping(value = "/users", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PostMapping("/update")
-    public String updateUser(@RequestParam Long id,
-                             @RequestParam String username,
-                             @RequestParam String lastName,
-                             @RequestParam Integer age,
-                             @RequestParam String email,
-                             @RequestParam(required = false) String password,
-                             @RequestParam(required = false) List<Integer> roleIds) {
-        userService.updateUser(id, username, lastName, age, email, password, roleIds);
-        return "redirect:/admin";
+    @GetMapping(value = "/users/{id}", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @PostMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id) {
+    @PostMapping(value = "/users", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        userService.saveUser(user);
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping(value = "/users/{id}", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<User> updateUser(@PathVariable Long id,
+                                           @RequestBody User user) {
+        user.setId(id);
+        userService.updateUser(user);
+        return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping(value = "/users/{id}", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return "redirect:/admin";
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/roles", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<List<Role>> getAllRoles() {
+        return ResponseEntity.ok(roleService.getAllRoles());
     }
 }

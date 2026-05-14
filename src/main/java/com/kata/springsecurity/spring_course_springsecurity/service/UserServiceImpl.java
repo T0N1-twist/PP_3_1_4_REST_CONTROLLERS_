@@ -5,9 +5,6 @@ import com.kata.springsecurity.spring_course_springsecurity.model.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
-import java.util.HashSet;
 import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
@@ -15,7 +12,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
-
 
 
     public  UserServiceImpl(UserRepository userRepository,PasswordEncoder passwordEncoder,RoleService roleService ) {
@@ -37,38 +33,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void saveUser(String username, String lastName, Integer age,
-                         String email, String password, List<Integer> roleIds) {
-        User user = new User();
-        user.setUsername(username);
-        user.setLastName(lastName);
-        user.setAge(age);
-        user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(password));
-
-        if (roleIds != null && !roleIds.isEmpty()) {
-            user.setRoles(new HashSet<>(roleService.getRolesByIds(roleIds)));
+    public void saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getRoles() != null && !user.getRoles().isEmpty()) {
+            List<Integer> roleIds = user.getRoles().stream()
+                    .map(r -> r.getId())
+                    .toList();
+            user.setRoles(new java.util.HashSet<>(roleService.getRolesByIds(roleIds)));
         }
         userRepository.save(user);
     }
 
     @Override
     @Transactional
-    public void updateUser(Long id, String username, String lastName, Integer age,
-                           String email, String password, List<Integer> roleIds) {
-        User existing = userRepository.findById(id)
+    public void updateUser(User user) {
+        User existing = userRepository.findById(user.getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        existing.setUsername(username);
-        existing.setLastName(lastName);
-        existing.setAge(age);
-        existing.setEmail(email);
 
-        if (password != null && !password.isBlank()) {
-            existing.setPassword(passwordEncoder.encode(password));
+        existing.setUsername(user.getUsername());
+        existing.setLastName(user.getLastName());
+        existing.setAge(user.getAge());
+        existing.setEmail(user.getEmail());
+
+        if (user.getPassword() != null && !user.getPassword().isBlank()) {
+            existing.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        if (roleIds != null) {
-            existing.setRoles(new HashSet<>(roleService.getRolesByIds(roleIds)));
+        if (user.getRoles() != null) {
+            List<Integer> roleIds = user.getRoles().stream()
+                    .map(r -> r.getId())
+                    .toList();
+            existing.setRoles(new java.util.HashSet<>(roleService.getRolesByIds(roleIds)));
         }
+
         userRepository.save(existing);
     }
 

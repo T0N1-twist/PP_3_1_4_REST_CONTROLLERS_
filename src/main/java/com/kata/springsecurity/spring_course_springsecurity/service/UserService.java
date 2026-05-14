@@ -7,23 +7,19 @@ import java.util.List;
 
 public interface UserService {
 
-    public List<User> getAllUsers();
+    List<User> getAllUsers();
 
-     User getUserById(Long id);
+    User getUserById(Long id);
 
-    void saveUser(String username, String lastName, Integer age,
-                  String email, String password, List<Integer> roleIds);
+    void saveUser(User user);       // ← новый
 
-     void updateUser(Long id, String username, String lastName, Integer age,
-                     String email, String password, List<Integer> roleIds);
+    void updateUser(User user);     // ← новый
 
-     void deleteUser(Long id);
+    void deleteUser(Long id);
 
-     User findByEmail(String email);
+    User findByEmail(String email);
 
-     boolean isExistByUsername(String username);
+    boolean isExistByUsername(String username);
 
-     User findWithRolesByUsername(String username);
-
-
+    User findWithRolesByUsername(String username);
 }
