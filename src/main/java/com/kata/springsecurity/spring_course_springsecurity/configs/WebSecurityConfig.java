@@ -15,7 +15,7 @@ public class WebSecurityConfig {
 
     private final SuccessUserHandler successUserHandler;
     private final MyCustomUserDetailService userDetailService;
-    private final PasswordEncoder passwordEncoder; // <-- инжектируем из PasswordEncoderConfig
+    private final PasswordEncoder passwordEncoder;
 
     public WebSecurityConfig(SuccessUserHandler successUserHandler,
                              MyCustomUserDetailService userDetailService,

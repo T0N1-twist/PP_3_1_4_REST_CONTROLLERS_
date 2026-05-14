@@ -9,6 +9,7 @@ import java.util.List;
 
 @Service
 public class RoleServiceImpl implements RoleService {
+
     private RoleRepository roleRepository;
 
     public RoleServiceImpl(RoleRepository roleRepository) {

@@ -3,7 +3,7 @@ package com.kata.springsecurity.spring_course_springsecurity.model;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.Set;
+
 
 
 @Entity
