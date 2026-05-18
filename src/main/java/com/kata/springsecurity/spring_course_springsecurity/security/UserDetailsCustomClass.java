@@ -34,12 +34,12 @@ public class UserDetailsCustomClass implements UserDetails {
     }
 
     @Override
-public boolean isAccountNonExpired(){
+    public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
-    public boolean isAccountNonLocked(){
+    public boolean isAccountNonLocked() {
         return true;
     }
 

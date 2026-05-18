@@ -1,7 +1,6 @@
 package com.kata.springsecurity.spring_course_springsecurity.model;
 
 import jakarta.persistence.*;
-
 import java.util.Set;
 
 @Entity

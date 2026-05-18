@@ -4,13 +4,14 @@ import com.kata.springsecurity.spring_course_springsecurity.model.Role;
 import com.kata.springsecurity.spring_course_springsecurity.model.User;
 import com.kata.springsecurity.spring_course_springsecurity.service.RoleService;
 import com.kata.springsecurity.spring_course_springsecurity.service.UserService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/admin")
 public class AdminController {
 
@@ -22,49 +23,41 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping
-    public String showAdminPage() {
-        return "admin";
+    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView showAdminPage() {
+        return new ModelAndView("admin");
     }
 
-    @GetMapping(value = "/users", produces = "application/json")
-    @ResponseBody
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
-    @GetMapping(value = "/users/{id}", produces = "application/json")
-    @ResponseBody
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+    @GetMapping(value = "/users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public User getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
     }
 
-    @PostMapping(value = "/users", produces = "application/json")
-    @ResponseBody
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    @PostMapping("/users")
+    public User createUser(@RequestBody User user) {
         userService.saveUser(user);
-        return ResponseEntity.ok(user);
+        return user;
     }
 
-    @PutMapping(value = "/users/{id}", produces = "application/json")
-    @ResponseBody
-    public ResponseEntity<User> updateUser(@PathVariable Long id,
-                                           @RequestBody User user) {
-        user.setId(id);
-        userService.updateUser(user);
-        return ResponseEntity.ok(user);
+    @PutMapping("/users/{id}")
+    public User updateUser(@PathVariable Long id, @RequestBody User user) {
+        userService.updateUser(id, user);
+        return user;
     }
 
-    @DeleteMapping(value = "/users/{id}", produces = "application/json")
-    @ResponseBody
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(value = "/roles", produces = "application/json")
-    @ResponseBody
-    public ResponseEntity<List<Role>> getAllRoles() {
-        return ResponseEntity.ok(roleService.getAllRoles());
+    @GetMapping(value = "/roles", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Role> getAllRoles() {
+        return roleService.getAllRoles();
     }
 }
