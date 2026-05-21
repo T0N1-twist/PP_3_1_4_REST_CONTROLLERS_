@@ -3,7 +3,6 @@ package com.kata.springsecurity.spring_course_springsecurity.security;
 import org.springframework.security.core.GrantedAuthority;
 import com.kata.springsecurity.spring_course_springsecurity.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 
 public class UserDetailsCustomClass implements UserDetails {

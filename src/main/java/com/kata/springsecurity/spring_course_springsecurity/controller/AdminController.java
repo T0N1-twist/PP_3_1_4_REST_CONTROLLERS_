@@ -23,10 +23,11 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView showAdminPage() {
-        return new ModelAndView("admin");
-    }
+//    @GetMapping
+
+//    public ModelAndView showAdminPage() {
+//        return new ModelAndView("admin");
+//    }
 
     @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getAllUsers() {

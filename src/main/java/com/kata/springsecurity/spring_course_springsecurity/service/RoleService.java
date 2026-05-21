@@ -1,7 +1,6 @@
 package com.kata.springsecurity.spring_course_springsecurity.service;
 
 import com.kata.springsecurity.spring_course_springsecurity.model.Role;
-
 import java.util.List;
 
 public interface RoleService {

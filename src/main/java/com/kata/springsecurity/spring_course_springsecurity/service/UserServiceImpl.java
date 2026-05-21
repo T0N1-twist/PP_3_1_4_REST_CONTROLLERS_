@@ -48,9 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUser(Long id, User user) {
-        // setId перенесён сюда из контроллера (по замечанию ментора)
         user.setId(id);
-
         User existing = userRepository.findById(user.getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 

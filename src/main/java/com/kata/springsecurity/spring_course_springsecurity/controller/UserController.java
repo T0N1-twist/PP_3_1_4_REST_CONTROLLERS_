@@ -14,10 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/user")
 public class UserController {
 
-    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView showUserPage() {
-        return new ModelAndView("user");
-    }
+//    @GetMapping
+//    public ModelAndView showUserPage() {
+//        return new ModelAndView("user");
+//    }
 
     @GetMapping(value = "/current", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getCurrentUser(Authentication authentication) {
