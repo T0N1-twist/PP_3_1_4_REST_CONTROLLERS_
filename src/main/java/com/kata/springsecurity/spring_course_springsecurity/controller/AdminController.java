@@ -7,8 +7,6 @@ import com.kata.springsecurity.spring_course_springsecurity.service.UserService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
 import java.util.List;
 
 @RestController
@@ -22,12 +20,6 @@ public class AdminController {
         this.userService = userService;
         this.roleService = roleService;
     }
-
-//    @GetMapping
-
-//    public ModelAndView showAdminPage() {
-//        return new ModelAndView("admin");
-//    }
 
     @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getAllUsers() {
