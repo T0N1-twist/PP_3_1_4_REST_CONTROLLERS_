@@ -21,12 +21,12 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/users")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @GetMapping(value = "/users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/users/{id}")
     public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
@@ -49,7 +49,7 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(value = "/roles", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/roles")
     public List<Role> getAllRoles() {
         return roleService.getAllRoles();
     }
